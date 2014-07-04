@@ -1,0 +1,5 @@
+#!/bin/sh
+# benjaesq@me.com
+
+source ./testlib.sh
+. ./$1

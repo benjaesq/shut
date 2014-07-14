@@ -28,6 +28,8 @@ log2_n()
     dashn=
 }
 
+warn() { echo ${dashn} "WARNING: $@" 1>&2; }
+
 print_test_name()
 {
     echo -n "${testname}: "

@@ -1,5 +1,47 @@
-#!/bin/sh
+#!/bin/bash
 # benjaesq@me.com
 
 source ./testlib.sh
-. ./$1
+
+#FIXME: this is printing just one dash always
+logdashes() { printf %0.s# {1..$1} >> ${logfile}; echo >> ${logfile}; }
+
+log50dashes() { logdashes "50"; }
+
+logheader() { log50dashes; log "  ${testscript} starting"; log50dashes; }
+
+logfooter() { log50dashes; log "  ${testscript} END"; log50dashes; }
+
+init_log()
+{
+
+    #assuming it is a unique file given the hour, minute, second in the name
+    touch ${logfile}
+    if [[ "X$?" != "X0" ]]; then
+        warn "cannot create log file: ${logfile}"
+        NOLOG=1
+    else
+    # initialize log
+        logheader
+    fi
+
+}
+
+close_log()
+{
+    test ${NOLOG} -eq 0 && logfooter
+}
+
+# setup
+shutdir=${SHUTDIR-${PWD}}
+testscript=$1
+testname=`echo ${testscript}|cut -f-2 -d'.'`
+NOLOG=0
+# construct the log file name
+HMS=`date +%H%M%S`
+logfile=${shutdir}/${HMS}-${testname}.log
+init_log
+
+source ./$1
+
+close_log

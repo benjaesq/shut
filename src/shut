@@ -38,6 +38,54 @@ usage()
     echo -e "\t`basename $0` <-l|--list>"
 }
 
+find_test_subject()
+{
+    for optarg in "$@"
+    do
+        #TODO: Finish him!!
+        echo -n
+    done
+}
+
+parseargs()
+{
+    short_opts=":df:lvx"
+    long_opts="filter list"
+
+    if [ "X$#" = "X1" ]; then
+        testscript=$1
+    else
+        while getopts ${short_opts} optarg
+        do
+            case $optarg in
+                d)
+                    debug_flag=1
+                    verbose_flag=1
+                    debug "debug_flag=$debug_flag"
+                    debug "verbose_flag=$verbose_flag"
+                    ;;
+                f)
+                    test_filter=${OPTARG}
+                    debug "test_filter=${test_filter}"
+                    ;;
+                l)
+                    list_tests=1
+                    debug "list_tests=${list_tests}"
+                    ;;
+                v)
+                    verbose_flag=1
+                    debug "verbose_flag=$verbose_flag"
+                    ;;
+                ?)
+                    echo "unrecognizable argument ${OPTARG}"
+                    ;;
+            esac
+        done
+        #find a test subject candidate, if any
+        find_test_subject "$@"
+    fi
+}
+
 # check for arguments and process them
 if [ "X$#" = "X0" ]; then
     echo "ERROR: $0 no arguments supplied" 1>&2
@@ -45,13 +93,8 @@ if [ "X$#" = "X0" ]; then
     exit 85 #E_OPTERROR
 fi
 
-if [ "X$#" = "X1" ]; then
-    testscript=$1
-else
-    #TODO: need to solve the getopt problem
-fi
+parseargs "$@"
 
-testscript=$1
 if [ ! -f "${testscript}" ]; then
     fatal "${testscript} not found, exiting"
     exit 126

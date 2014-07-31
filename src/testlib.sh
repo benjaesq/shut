@@ -34,9 +34,15 @@ err() { echo ${dashn} "ERROR: $@" 1>&2; }
 
 fatal() { echo ${dashn} "FATAL: $@" 1>&2; }
 
-verbose() { echo -e "VERB: $@"; }
+verbose()
+{
+    [[ "X${verbose_flag}" = "X1" ]] && echo -e "VERB: $@"
+}
 
-debug() { echo "DEBUG: $@"; }
+debug()
+{
+    [[ "X${debug_flag}" = "X1" ]] && echo -e "DEBUG: $@"
+}
 
 print_test_name()
 {

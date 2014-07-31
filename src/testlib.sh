@@ -28,7 +28,15 @@ log2_n()
     dashn=
 }
 
-warn() { echo ${dashn} "WARNING: $@" 1>&2; }
+warn() { echo ${dashn} "WARN: $@" 1>&2; }
+
+err() { echo ${dashn} "ERROR: $@" 1>&2; }
+
+fatal() { echo ${dashn} "FATAL: $@" 1>&2; }
+
+verbose() { echo -e "VERB: $@"; }
+
+debug() { echo "DEBUG: $@"; }
 
 print_test_name()
 {

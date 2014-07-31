@@ -44,11 +44,3 @@ test_first_005()
 #TODO: create logic to identify test cases
 #TODO: list test cases
 #TODO: show summary at the end of the testing
-
-# pushd .. > /dev/null
-test_first_001
-test_first_002
-test_first_003
-test_first_004
-test_first_005
-# popd > /dev/null

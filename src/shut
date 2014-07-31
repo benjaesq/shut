@@ -33,8 +33,26 @@ close_log()
 }
 
 # setup
-shutdir=${SHUTDIR-${PWD}}
 testscript=$1
+if [ ! -f "${testscript}" ]; then
+    fatal "${testscript} not found, exiting"
+    exit 126
+fi
+
+# count the number of tests that the testscript has
+testlist=`grep "^test_.*()" ${testscript} | cut -f1 -d '('`
+verbose "test list queried is:\n${testlist}"
+# why is the wc including spaces?
+testnum=`echo ${testlist} | wc -w| tr -d ' '`
+debug "testnum=${testnum}"
+
+if [ "X${testnum}" == "X0" ]; then
+    fatal "could not find tests in ${testscript}"
+    exit 126
+fi
+verbose "found ${testnum} number of tests"
+
+shutdir=${SHUTDIR-${PWD}}
 testname=`echo ${testscript}|cut -f-2 -d'.'`
 NOLOG=0
 # construct the log file name
@@ -42,6 +60,8 @@ HMS=`date +%H%M%S`
 logfile=${shutdir}/${HMS}-${testname}.log
 init_log
 
-source ./$1
+source ./${testscript}
+
+#TODO: list the tests upon -l request
 
 close_log

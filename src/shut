@@ -32,7 +32,25 @@ close_log()
     test ${NOLOG} -eq 0 && logfooter
 }
 
-# setup
+usage()
+{
+    echo -e "usage: \n\t`basename $0` <test-subject> [options]"
+    echo -e "\t`basename $0` <-l|--list>"
+}
+
+# check for arguments and process them
+if [ "X$#" = "X0" ]; then
+    echo "ERROR: $0 no arguments supplied" 1>&2
+    usage
+    exit 85 #E_OPTERROR
+fi
+
+if [ "X$#" = "X1" ]; then
+    testscript=$1
+else
+    #TODO: need to solve the getopt problem
+fi
+
 testscript=$1
 if [ ! -f "${testscript}" ]; then
     fatal "${testscript} not found, exiting"

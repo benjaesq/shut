@@ -3,8 +3,7 @@
 
 source ./testlib.sh
 
-#FIXME: this is printing just one dash always
-logdashes() { printf %0.s# {1..$1} >> ${logfile}; echo >> ${logfile}; }
+logdashes() { eval printf %0.s# {1..$1} >> ${logfile}; echo >> ${logfile}; }
 
 log50dashes() { logdashes "50"; }
 
